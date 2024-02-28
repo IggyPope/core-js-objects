@@ -152,8 +152,37 @@ function makeWord(lettersObject) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  const TICKET_PRICE = 25;
+  const cash = new Map();
+
+  for (let i = 0; i < queue.length; i += 1) {
+    const note = queue[i];
+
+    if (!cash.has(note)) {
+      cash.set(note, 1);
+    } else {
+      cash.set(note, cash.get(note) + 1);
+    }
+
+    if (note > TICKET_PRICE) {
+      let change = note - TICKET_PRICE;
+
+      while (change > 0) {
+        if (!cash.get(50) && !cash.get(25)) return false;
+
+        if (change >= 50 && cash.get(50) > 0) {
+          change -= 50;
+          cash.set(50, cash.get(50) - 1);
+        }
+        if (change >= 25 && cash.get(25) > 0) {
+          change -= 25;
+          cash.set(25, cash.get(25) - 1);
+        }
+      }
+    }
+  }
+  return true;
 }
 
 /**
